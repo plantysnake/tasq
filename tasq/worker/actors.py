@@ -138,7 +138,7 @@ class TimedActor(Actor):
             self.name,
             self.mailbox_size,
         )
-        job.add_delay(delay)
+        job.set_delay(delay)
         self.send((job, future))
         return future
 

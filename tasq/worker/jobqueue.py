@@ -56,7 +56,13 @@ class JobQueue(JoinableQueue):
         # if not isinstance(worker_class, Worker):
         #     raise Exception
         # Retrieve the spawn context for the joinable queue super class
-        ctx = get_context(start_method)
+        try:
+            ctx = get_context(start_method)
+        except ValueError as ve:
+            if str(ve).endswith("cannot find context for 'fork'"):
+                ctx = get_context("spawn")
+            else:
+                raise
         # Init super class
         super().__init__(ctx=ctx)
         # Number of workers to spawn

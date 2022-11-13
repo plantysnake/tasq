@@ -89,7 +89,7 @@ class Executor(ABC):
                         delay = int(eta)
                     except ValueError:
                         delay = multiples[eta[-1]] * int(eta[:-1])
-                job.add_delay(delay)
+                job.set_delay(delay)
                 response = self.execute_job(job)
                 # Push the completed job in the result queue ready to be
                 # answered to the requesting client

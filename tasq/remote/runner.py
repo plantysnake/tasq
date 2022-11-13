@@ -78,8 +78,10 @@ class ZMQRunner:
         self._log.info("Stopping..")
         self._run = False
         # Cancel pending tasks (opt)
-        for task in asyncio.Task.all_tasks():
+        for task in asyncio.all_tasks(self._loop):
             task.cancel()
+        while not all([t.done() for t in asyncio.all_tasks(self._loop)]):
+            self._loop._run_once()
         self._loop.stop()
         self._loop.close()
         # Stop server connection
